@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Contact</title>
+  <link href="https://fonts.googleapis.com/css2?family=The+Girl+Next+Door&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Dosis:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    @font-face {
+      font-family: 'Somelove';
+      src: url('/static/fonts/Somelove.otf') format('opentype');
+    }
+
+    body {
+      font-family: 'Dosis', sans-serif;
+      background-color: #f9f7f1;
+      color: #000;
+      margin: 0;
+    }
+
+    h1, label {
+      font-family: 'The Girl Next Door', cursive;
+      font-weight: bold;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      font-size: 14pt;
+    }
+
+    h1 {
+      color: #8e8c37;
+      margin-bottom: 30px;
+      text-align: center;
+      font-size: 32px;
+    }
+
+    form {
+      max-width: 600px;
+      margin: auto;
+    }
+
+    label {
+      font-weight: bold;
+      margin-top: 15px;
+      margin-right: 10px;
+      color: #8e8c37;
+      font-size: 18px;
+      display: block;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #8e8c37;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+
+    button {
+      margin-top: 30px;
+      padding: 10px 20px;
+      background-color: #8e8c37;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-family: 'Somelove', cursive;
+      font-weight: normal;
+      font-size: 16pt;
+    }
+
+    .navbar {
+      background-color: #f9f7f1;
+      padding: 10px 20px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .nav-container {
+      max-width: 1100px;
+      margin: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+    }
+
+    .nav-logo img.logo-mini {
+      height: 40px;
+    }
+
+    .nav-links {
+      display: none;
+      position: absolute;
+      top: 60px;
+      right: 10px;
+      flex-direction: column;
+      align-items: flex-start;
+      background-color: #f9f7f1;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      padding: 20px 30px;
+      border-radius: 10px;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      opacity: 0;
+      transform: translateY(-10px);
+      min-width: 180px;
+      z-index: 1001;
+    }
+
+    .nav-links a {
+      margin: 10px 0;
+      font-size: 18px;
+      text-align: left;
+      text-decoration: none;
+      color: #8e8c37;
+      font-weight: bold;
+      font-family: 'The Girl Next Door', cursive;
+    }
+
+    .nav-links a:hover {
+      text-decoration: underline;
+    }
+
+    .nav-links.show {
+      display: flex;
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    
+    .menu-toggle {
+      display: none;
+      flex-direction: column;
+      cursor: pointer;
+    }
+
+    .menu-toggle span {
+      height: 3px;
+      width: 25px;
+      background: #8e8c37;
+      margin: 4px 0;
+      border-radius: 2px;
+    }
+
+    .hamburger {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: none;
+      border: none;
+      cursor: pointer;
+      margin-top: -2px;
+    }
+
+    .hamburger span {
+      width: 25px;
+      height: 3px;
+      background: #8e8c37;
+      margin: 3px 0;
+      transition: all 0.3s ease-in-out;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+
+    .hamburger:hover span {
+      transform: scaleX(1.2);
+      opacity: 0.8;
+    }
+
+    @media (max-width: 768px) {
+      .nav-links a {
+        margin: 10px 0;
+        font-size: 18px;
+      }
+    }
+
+    section {
+      padding: 60px 20px;
+      text-align: center;
+    }
+
+    h2 {
+      font-family: 'The Girl Next Door', cursive;
+      font-size: 14pt;
+      font-weight: bold;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: #8e8c37;
+      margin-bottom: 20px;
+    }
+
+    .btn {
+      display: inline-block;
+      margin-top: 30px;
+      background-color: #8e8c37;
+      color: white;
+      padding: 12px 24px;
+      text-decoration: none;
+      border-radius: 5px;
+      font-size: 16px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-family: 'The Girl Next Door', cursive;
+    }
+
+    blockquote {
+      font-family: 'Somelove', cursive;
+      font-style: italic;
+      color: #555;
+      font-size: 16pt;
+      max-width: 700px;
+      margin: 0 auto 40px;
+    }
+  </style>
+  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      AOS.init();
+      document.querySelectorAll('.nav-links a').forEach(link => {
+        link.addEventListener('click', () => {
+          document.querySelector('.nav-links').classList.remove('active');
+        });
+      });
+    });
+  </script>
+</head>
+
+<body>
+
+
+  <nav class="navbar">
+  <div class="nav-container">
+    <a href="/" class="nav-logo">
+      <img src="/static/images/logo_rond1.png" alt="Logo" class="logo-mini">
+    </a>
+    <div style="flex: 1;"></div>
+    <button class="hamburger" aria-label="Menu" aria-expanded="false">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </div>
+  <div class="nav-links" id="menu">
+    <a href="/">Accueil</a>
+    <a href="/prestations">Prestations</a>
+    <a href="/contact">Contact</a>
+  </div>
+</nav>
+
+
+  <div style="text-align: center; margin-top: 20px; margin-bottom: 0;">
+    <img src="/static/images/logo_rond1.png" alt="Logo Métisse Cook" style="max-width: 120px;">
+  </div>
+  <h1>Formulaire de contact</h1>
+  <form method="POST" action="/contact">
+    <label for="nom">Nom :</label>
+    <input type="text" name="nom" required>
+
+    <label for="email">Email :</label>
+    <input type="email" name="email" required>
+
+    <label for="categorie">Vous êtes :</label>
+    <select name="categorie" id="categorie" required>
+      <option value="particulier">Particulier</option>
+      <option value="entreprise">Entreprise</option>
+    </select>
+
+    <label for="type_evenement">Type d'événement :</label>
+    <select name="type_evenement" id="type_evenement" required>
+      <option value="anniversaire">Anniversaire</option>
+      <option value="mariage">Mariage</option>
+      <option value="reception_entreprise">Réception d'entreprise</option>
+      <option value="reunion_entreprise">Réunion d'entreprise</option>
+      <option value="autre">Autre</option>
+    </select>
+
+    <label for="type_prestation">Type de prestation :</label>
+    <select name="type_prestation" id="type_prestation" required>
+      <option value="cocktail">Cocktail</option>
+      <option value="dejeuner_diner">Déjeuner / Dîner</option>
+      <option value="brunch">Brunch</option>
+      <option value="plateau">Plateau apéritifs en livraison</option>
+      <option value="lunchbox">Lunch Box</option>
+      <option value="chef">Chef à domicile</option>
+      <option value="autre">Autre</option>
+    </select>
+
+    <label for="message">Message :</label>
+    <textarea name="message" rows="5" required></textarea>
+
+    <button type="submit">Envoyer</button>
+  </form>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const hamburger = document.querySelector('.hamburger');
+    const menu = document.getElementById('menu');
+
+    hamburger.addEventListener('click', function () {
+      menu.classList.toggle('show');
+      const expanded = hamburger.getAttribute('aria-expanded') === 'true' || false;
+      hamburger.setAttribute('aria-expanded', !expanded);
+    });
+
+    document.querySelectorAll('.nav-links a').forEach(link => {
+      link.addEventListener('click', () => {
+        menu.classList.remove('show');
+        hamburger.setAttribute('aria-expanded', 'false');
+      });
+    });
+  });
+</script>
+</body>
+</html>

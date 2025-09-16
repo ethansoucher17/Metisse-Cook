@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Métisse Cook – Accueil</title>
+  <link href="https://fonts.googleapis.com/css2?family=The+Girl+Next+Door&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Dosis:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    @font-face {
+      font-family: 'Somelove';
+      src: url('/static/fonts/Somelove.otf') format('opentype');
+    }
+
+    body {
+      font-family: 'Dosis', sans-serif;
+      background-color: #f9f7f1;
+      color: #000;
+      margin: 0;
+    }
+
+    section {
+      padding: 60px 20px;
+      text-align: center;
+    }
+
+    h1, h2 {
+      color: #8e8c37;
+      margin-bottom: 20px;
+    }
+
+    h2 {
+      font-family: 'The Girl Next Door', cursive;
+      font-size: 14pt;
+      font-weight: bold;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .btn {
+      display: inline-block;
+      margin-top: 30px;
+      background-color: #8e8c37;
+      color: white;
+      padding: 12px 24px;
+      text-decoration: none;
+      border-radius: 5px;
+      font-size: 16px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-family: 'The Girl Next Door', cursive;
+    }
+
+    blockquote {
+      font-family: 'Somelove', cursive;
+      font-style: italic;
+      color: #555;
+      font-size: 16pt;
+      max-width: 700px;
+      margin: 0 auto 40px;
+    }
+
+    .navbar {
+      background-color: #f9f7f1;
+      padding: 10px 20px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .nav-container {
+      max-width: 1100px;
+      margin: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+    }
+
+    .nav-logo img.logo-mini {
+      height: 40px;
+    }
+
+    .nav-links {
+      display: none;
+      position: absolute;
+      top: 60px;
+      right: 10px;
+      flex-direction: column;
+      align-items: flex-start;
+      background-color: #f9f7f1;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      padding: 20px 30px;
+      border-radius: 10px;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      opacity: 0;
+      transform: translateY(-10px);
+      min-width: 180px;
+      z-index: 1001;
+    }
+
+    .nav-links a {
+      margin: 10px 0;
+      font-size: 18px;
+      text-align: left;
+      text-decoration: none;
+      color: #8e8c37;
+      font-weight: bold;
+      font-family: 'The Girl Next Door', cursive;
+    }
+
+    .nav-links a:hover {
+      text-decoration: underline;
+    }
+
+    .nav-links.show {
+      display: flex;
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .menu-toggle {
+      display: none;
+      flex-direction: column;
+      cursor: pointer;
+    }
+
+    .menu-toggle span {
+      height: 3px;
+      width: 25px;
+      background: #8e8c37;
+      margin: 4px 0;
+      border-radius: 2px;
+    }
+
+    .hamburger {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+
+    .hamburger span {
+      width: 25px;
+      height: 3px;
+      background: #8e8c37;
+      margin: 3px 0;
+      transition: all 0.3s ease-in-out;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+
+    .hamburger:hover span {
+      transform: scaleX(1.2);
+      opacity: 0.8;
+    }
+
+    @media (max-width: 768px) {
+      .nav-links a {
+        margin: 10px 0;
+        font-size: 18px;
+      }
+    }
+  </style>
+  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      AOS.init();
+      document.querySelectorAll('.nav-links a').forEach(link => {
+        link.addEventListener('click', () => {
+          document.querySelector('.nav-links').classList.remove('active');
+        });
+      });
+    });
+  </script>
+</head>
+
+<body>
+
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="/" class="nav-logo">
+        <img src="/static/images/logo_rond1.png" alt="Logo" class="logo-mini">
+      </a>
+      <div style="flex: 1;"></div>
+      <button class="hamburger" aria-label="Menu" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div class="nav-links" id="menu">
+      <a href="/">Accueil</a>
+      <a href="/prestations">Prestations</a>
+      <a href="/contact">Contact</a>
+    </div>
+  </nav>
+
+  <section data-aos="fade-up">
+    <img src="/static/images/logo_rond1.png"
+         alt="Logo Métisse Cook"
+         data-aos="zoom-in"
+         style="max-width: 180px; margin-bottom: 20px;">
+    <h1 style="font-family: 'Somelove', cursive; font-size: 24pt; font-weight: bold; letter-spacing: 1px; text-transform: uppercase;">Métisser l’art de recevoir</h1>
+  </section>
+
+  <section data-aos="fade-up">
+    <h2>À propos de la cheffe</h2>
+    <p style="font-family: 'Somelove', cursive; max-width: 800px; margin: auto; font-size: 14pt; line-height: 1.6; margin-top: -10px; margin-bottom: 30px;" data-aos="zoom-in">Cheffe Métisse Cook</p>
+    <p style="max-width: 800px; margin: auto; font-size: 14pt; line-height: 1.6;" data-aos="zoom-in">
+      Métisse Cook est portée par une cheffe passionnée, inspirée par ses racines, ses voyages et les rencontres humaines. Elle propose une cuisine métissée, généreuse et sur-mesure, mêlant tradition africaine et créativité contemporaine. Forte d'une expérience dans la restauration et l'événementiel, elle sublime vos instants gourmands avec goût, audace et convivialité.
+    </p>
+  </section>
+
+  <section data-aos="fade-up">
+    <img src="/static/images/illustration_evenement.jpg"
+         alt="Illustration événement"
+         data-aos="zoom-in"
+         style="max-width: 900px; width: 100%; border-radius: 10px; margin-bottom: 30px; box-shadow: 0 8px 20px rgba(0,0,0,0.1);">
+    <p style="max-width: 800px; margin: auto; font-size: 14pt; line-height: 1.6;" data-aos="zoom-in">
+      Que ce soit pour un anniversaire en famille, un mariage raffiné, une réception d'entreprise ou une réunion conviviale entre collègues, Métisse Cook adapte ses propositions à vos envies. Chaque événement mérite une cuisine unique, chaleureuse et créative, pensée pour rassembler.
+    </p>
+  </section>
+
+  <section data-aos="fade-up">
+    <blockquote style="font-family: 'Somelove', cursive; font-style: italic; font-size: 16pt; color: #555; max-width: 700px; margin: 0 auto 40px;">« Une cuisine de partage, de cœur et de métissage »</blockquote>
+    <h2>Des prestations pour tous les goûts</h2>
+    <p style="max-width: 800px; margin: auto; font-size: 14pt; line-height: 1.6;" data-aos="zoom-in">
+      Découvrez l’ensemble des formules proposées : cocktail, déjeuner/dîner, brunch, plateaux apéritifs, lunch box et chef à domicile.
+    </p>
+    <div style="margin-top: 30px;">
+      <a href="/prestations" class="btn">Voir les prestations</a>
+    </div>
+  </section>
+
+  <hr style="border: none; border-top: 1px solid #dcd6c0; margin: 60px auto 0; width: 80%;">
+  <section data-aos="fade-up" style="background-color: #f9f7f1; text-align: center; padding: 40px 20px; margin-top: 80px;">
+    <img src="/static/images/bandeau_infos2.png" alt="Coordonnées Métisse Cook" style="max-width: 600px; width: 100%; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.08);">
+    <div style="margin-top: 30px;">
+      <a href="/contact" class="btn">Réserver une prestation</a>
+    </div>
+    <p style="font-size: 10pt; color: #777; margin-top: 20px;">© Métisse Cook 2025 – Tous droits réservés.</p>
+  </section>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      AOS.init();
+      const hamburger = document.querySelector('.hamburger');
+      const menu = document.getElementById('menu');
+
+      hamburger.addEventListener('click', function () {
+        if (menu.classList.contains('show')) {
+          menu.classList.remove('show');
+        } else {
+          menu.style.display = 'flex';
+          setTimeout(() => {
+            menu.classList.add('show');
+          }, 10);
+        }
+        const expanded = hamburger.getAttribute('aria-expanded') === 'true' || false;
+        hamburger.setAttribute('aria-expanded', !expanded);
+      });
+
+      document.querySelectorAll('.nav-links a').forEach(link => {
+        link.addEventListener('click', () => {
+          menu.classList.remove('show');
+          setTimeout(() => {
+            menu.style.display = 'none';
+          }, 300);
+          hamburger.setAttribute('aria-expanded', 'false');
+        });
+      });
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Nos prestations – Métisse Cook</title>
+  <link href="https://fonts.googleapis.com/css2?family=The+Girl+Next+Door&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Dosis:wght@400;700&display=swap" rel="stylesheet">
+  <!-- AOS CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+  <style>
+    @font-face {
+      font-family: 'Somelove';
+      src: url('/static/fonts/Somelove.otf') format('opentype');
+    }
+    .navbar {
+      background-color: #f9f7f1;
+      padding: 10px 20px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .nav-container {
+      max-width: 1100px;
+      margin: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+    }
+
+    .nav-logo img.logo-mini {
+      height: 40px;
+    }
+    .hamburger {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+
+    .hamburger span {
+      width: 25px;
+      height: 3px;
+      background: #8e8c37;
+      margin: 3px 0;
+      transition: all 0.3s ease-in-out;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+
+    .hamburger:hover span {
+      transform: scaleX(1.2);
+      opacity: 0.8;
+    }
+    body {
+      font-family: 'Dosis', sans-serif;
+      background-color: #f9f7f1;
+      color: #000;
+      margin: 0;
+    }
+
+    h1 {
+      color: #8e8c37;
+      margin-bottom: 30px;
+      text-align: center;
+      font-size: 32px;
+    }
+
+    .prestations {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 40px;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    .prestation {
+      background-color: white;
+      border-radius: 8px;
+      width: 300px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+      transform: scale(1);
+    }
+
+    .prestation:hover {
+      transform: scale(1.07);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+    }
+
+    .prestation img {
+      width: 100%;
+      height: 240px;
+      object-fit: cover;
+      border-bottom: 3px solid #8e8c37;
+      transition: transform 0.3s ease-in-out;
+    }
+
+    .prestation:hover img {
+      transform: scale(1.05);
+    }
+
+    .prestation-content {
+      padding: 20px;
+    }
+
+    .prestation-content h3 {
+      margin-top: 0;
+      color: #8e8c37;
+      font-family: 'The Girl Next Door', cursive;
+      font-size: 10pt;
+      font-weight: bold;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .prestation-content p {
+      font-size: 18px;
+      line-height: 1.6;
+      margin-top: 10px;
+    }
+
+    select {
+      font-family: 'The Girl Next Door', cursive;
+      font-size: 18px;
+      padding: 8px 12px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      background-color: #fff;
+      color: #000;
+      box-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+      transition: border-color 0.3s ease;
+    }
+
+    select:focus {
+      outline: none;
+      border-color: #8e8c37;
+    }
+
+    label {
+      font-weight: bold;
+      margin-right: 10px;
+      color: #8e8c37;
+      font-size: 18px;
+    }
+
+    .nav-links {
+      display: none;
+      position: absolute;
+      top: 60px;
+      right: 20px;
+      flex-direction: column;
+      align-items: flex-start;
+      background-color: #f9f7f1;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      padding: 20px 30px;
+      border-radius: 10px;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      opacity: 0;
+      transform: translateY(-10px);
+      min-width: 180px;
+      z-index: 1001;
+    }
+
+    .nav-links a {
+      margin: 10px 0;
+      font-size: 18px;
+      text-align: left;
+      text-decoration: none;
+      color: #8e8c37;
+      font-weight: bold;
+      font-family: 'The Girl Next Door', cursive;
+    }
+
+    .nav-links a:hover {
+      text-decoration: underline;
+    }
+
+    .nav-links.show {
+      display: flex;
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="/" class="nav-logo">
+        <img src="/static/images/logo_rond1.png" alt="Logo" class="logo-mini">
+      </a>
+      <div style="flex: 1;"></div>
+      <button class="hamburger" aria-label="Menu" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div class="nav-links" id="menu">
+      <a href="/">Accueil</a>
+      <a href="/prestations">Prestations</a>
+      <a href="/contact">Contact</a>
+    </div>
+  </nav>
+  <h1>Nos prestations</h1>
+  <blockquote style="font-family: 'Somelove', cursive; font-size: 16pt; font-style: italic; margin: 50px auto 30px; max-width: 700px; color: #444; text-align: center;">
+    « Métisser l’art de recevoir » – c’est l’idée d’une cuisine généreuse, métissée, au service de vos moments précieux.
+  </blockquote>
+  <div class="prestations">
+    <div class="prestation" data-aos="fade-up">
+      <img src="/static/images/cocktail.jpg" alt="Cocktail">
+      <div class="prestation-content">
+        <h3>Cocktail</h3>
+        <p>Bouchées et gourmandises pour vos apéritifs, inaugurations ou événements festifs.</p>
+      </div>
+    </div>
+    <div class="prestation" data-aos="fade-up">
+      <img src="/static/images/dejeuner.jpg" alt="Déjeuner / Dîner">
+      <div class="prestation-content">
+        <h3>Déjeuner / Dîner</h3>
+        <p>Menus complets sur mesure pour vos repas de mariage, événements privés ou professionnels.</p>
+      </div>
+    </div>
+    <div class="prestation" data-aos="fade-up">
+      <img src="/static/images/brunch.jpg" alt="Brunch">
+      <div class="prestation-content">
+        <h3>Brunch</h3>
+        <p>Buffets sucrés-salés généreux et colorés, parfaits pour un lendemain de fête ou une réunion conviviale.</p>
+      </div>
+    </div>
+    <div class="prestation" data-aos="fade-up">
+      <img src="/static/images/plateau.jpg" alt="Plateau apéritif">
+      <div class="prestation-content">
+        <h3>Plateau apéritif</h3>
+        <p>Livraison de plateaux variés pour vos apéros en petit comité, en entreprise ou à domicile.</p>
+      </div>
+    </div>
+    <div class="prestation" data-aos="fade-up">
+      <img src="/static/images/lunchbox.jpg" alt="Lunch box">
+      <div class="prestation-content">
+        <h3>Lunch box</h3>
+        <p>Repas individuels livrés pour vos réunions, séminaires ou repas pratiques sur le pouce.</p>
+      </div>
+    </div>
+    <div class="prestation" data-aos="fade-up">
+      <img src="/static/images/chef.jpg" alt="Chef à domicile">
+      <div class="prestation-content">
+        <h3>Cheffe à domicile</h3>
+        <p>Un moment sur mesure avec une cheffe à la maison, pour une expérience culinaire inoubliable.</p>
+      </div>
+    </div>
+  </div>
+
+  <div style="text-align: center; margin-top: 40px;">
+    <a href="/contact" style="background-color: #8e8c37; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-size: 18px; font-family: 'Somelove', cursive;">
+      Réserver une prestation
+    </a>
+  </div>
+
+  <hr style="border: none; border-top: 1px solid #dcd6c0; margin: 60px auto 0; width: 80%;">
+  <section data-aos="fade-up" style="background-color: #f9f7f1; text-align: center; padding: 40px 20px; margin-top: 80px;">
+    <img src="/static/images/bandeau_infos2.png" alt="Coordonnées Métisse Cook" style="max-width: 600px; width: 100%; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.08);">
+  </section>
+<p style="font-size: 10pt; color: #777; margin-top: 20px; text-align: center;">
+  © Métisse Cook 2025 – Tous droits réservés.
+</p>
+
+  <!-- AOS JS -->
+  <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+  <script>
+    AOS.init({
+      duration: 800,
+      once: true
+    });
+  </script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const hamburger = document.querySelector('.hamburger');
+      const menu = document.getElementById('menu');
+
+      hamburger.addEventListener('click', function () {
+        if (menu.classList.contains('show')) {
+          menu.classList.remove('show');
+        } else {
+          menu.style.display = 'flex';
+          setTimeout(() => {
+            menu.classList.add('show');
+          }, 10);
+        }
+        const expanded = hamburger.getAttribute('aria-expanded') === 'true' || false;
+        hamburger.setAttribute('aria-expanded', !expanded);
+      });
+
+      document.querySelectorAll('.nav-links a').forEach(link => {
+        link.addEventListener('click', () => {
+          menu.classList.remove('show');
+          setTimeout(() => {
+            menu.style.display = 'none';
+          }, 300);
+          hamburger.setAttribute('aria-expanded', 'false');
+        });
+      });
+    });
+  </script>
+</body>
+</html>
