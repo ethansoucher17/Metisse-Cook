@@ -4,6 +4,7 @@ from flask import Flask, render_template
 from dotenv import load_dotenv
 from flask import request, redirect, url_for, flash, get_flashed_messages
 from flask_mail import Mail, Message
+from werkzeug.security import generate_password_hash, check_password_hash
 
 load_dotenv()
 app = Flask(__name__)
@@ -42,7 +43,20 @@ def prestations():
     conn.close()
     return render_template("prestations.html", prestations=prestations)
 
+from functools import wraps
+from flask import session
+
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if "user_id" not in session:
+            flash("Connexion requise.")
+            return redirect(url_for("login"))
+        return f(*args, **kwargs)
+    return decorated_function
+
 @app.route("/admin/prestations")
+@login_required
 def admin_prestations():
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
@@ -174,6 +188,28 @@ def contact():
 @app.route("/confirmation")
 def confirmation():
     return render_template("confirmation.html")
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if request.method == "POST":
+        email = request.form["email"]
+        mot_de_passe = request.form["mot_de_passe"]
+
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+        cursor.execute("SELECT * FROM utilisateurs WHERE email = %s", (email,))
+        user = cursor.fetchone()
+        cursor.close()
+        conn.close()
+
+        if user and check_password_hash(user["mot_de_passe"], mot_de_passe):
+            session["user_id"] = user["id"]
+            flash("Connexion réussie !")
+            return redirect(url_for("admin_prestations"))
+        else:
+            flash("Identifiants incorrects")
+
+    return render_template("login.html")
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
