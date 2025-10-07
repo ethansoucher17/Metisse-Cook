@@ -198,16 +198,17 @@ def login():
         conn = get_db_connection()
         cursor = conn.cursor(dictionary=True)
         cursor.execute("SELECT * FROM utilisateurs WHERE email = %s", (email,))
-        user = cursor.fetchone()
+        utilisateur = cursor.fetchone()
         cursor.close()
         conn.close()
 
-        if user and check_password_hash(user["mot_de_passe"], mot_de_passe):
-            session["user_id"] = user["id"]
+        if utilisateur and check_password_hash(utilisateur["mot_de_passe"], mot_de_passe):
+            session["utilisateur_id"] = utilisateur["id"]
+            session["utilisateur_email"] = utilisateur["email"]
             flash("Connexion réussie !")
             return redirect(url_for("admin_prestations"))
         else:
-            flash("Identifiants incorrects")
+            flash("Email ou mot de passe incorrect")
 
     return render_template("login.html")
 
