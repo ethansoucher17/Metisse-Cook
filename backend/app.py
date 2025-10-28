@@ -32,8 +32,12 @@ app.config['MAIL_DEFAULT_SENDER'] = "metissecook@gmail.com"
 mail = Mail(app)
 
 @app.route("/")
-def accueil():
+def index():
     return render_template("index.html")
+
+@app.route("/accueil")
+def accueil():
+    return redirect(url_for("index"))
 
 @app.route("/prestations")
 def prestations():
@@ -216,7 +220,7 @@ def login():
 def logout():
     session.clear()
     flash("Vous avez été déconnecté.")
-    return redirect(url_for('accueil'))
+    return redirect(url_for('index'))
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
