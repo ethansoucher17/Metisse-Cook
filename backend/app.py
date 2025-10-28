@@ -18,6 +18,8 @@ def get_db_connection():
         password=os.getenv("DB_PASSWORD"),
         database=os.getenv("DB_NAME"),
         port=int(os.getenv("DB_PORT"))
+        charset='utf8mb4',
+        collation='utf8mb4_general_ci'
     )
 
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
