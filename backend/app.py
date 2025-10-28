@@ -17,7 +17,7 @@ def get_db_connection():
         user=os.getenv("DB_USER"),
         password=os.getenv("DB_PASSWORD"),
         database=os.getenv("DB_NAME"),
-        port=int(os.getenv("DB_PORT"))
+        port=int(os.getenv("DB_PORT")),
         charset='utf8mb4',
         collation='utf8mb4_general_ci'
     )
@@ -213,6 +213,12 @@ def login():
             flash("Email ou mot de passe incorrect")
 
     return render_template("login.html")
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    flash("Vous avez été déconnecté.")
+    return redirect(url_for('index'))
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
