@@ -78,6 +78,13 @@
     </style>
 </head>
 <body>
+    <div class="admin-header" style="display:flex; justify-content: space-between; align-items:center; background-color:#f8f8f8; padding:10px 20px;">
+        <h2>Espace administrateur</h2>
+        <div>
+            <a href="{{ url_for('index') }}" class="btn" style="margin-right:10px;">🏠 Accueil</a>
+            <a href="{{ url_for('logout') }}" class="btn btn-danger">🚪 Quitter le mode admin</a>
+        </div>
+    </div>
     <div class="container">
         {% with messages = get_flashed_messages() %}
           {% if messages %}
