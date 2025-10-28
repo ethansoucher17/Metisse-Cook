@@ -39,7 +39,7 @@ def accueil():
 def prestations():
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
-    cursor.execute("SELECT titre, type, description, image_url FROM prestations")
+    cursor.execute("SELECT titre, description, image_url FROM prestations")
     prestations = cursor.fetchall()
     cursor.close()
     conn.close()
@@ -62,7 +62,7 @@ def login_required(f):
 def admin_prestations():
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
-    cursor.execute("SELECT id, titre, description FROM prestations")
+    cursor.execute("SELECT id, titre, description, image_url FROM prestations")
     prestations = cursor.fetchall()
     cursor.close()
     conn.close()
@@ -78,7 +78,7 @@ def ajouter_prestation():
         conn = get_db_connection()
         cursor = conn.cursor()
         cursor.execute(
-            "INSERT INTO prestations (titre, description, image_url) VALUES (%s, %s, %s, %s)",
+            "INSERT INTO prestations (titre, description, image_url) VALUES (%s, %s, %s)",
             (titre, description, image_url)
         )
         conn.commit()
@@ -114,9 +114,9 @@ def modifier_prestation(id):
 
         cursor.execute("""
             UPDATE prestations
-            SET titre = %s, type = %s, description = %s, image_url = %s
+            SET titre = %s, description = %s, image_url = %s
             WHERE id = %s
-        """, (titre, type_, description, image_url, id))
+        """, (titre, description, image_url, id))
         conn.commit()
         cursor.close()
         conn.close()
@@ -216,7 +216,7 @@ def login():
 def logout():
     session.clear()
     flash("Vous avez été déconnecté.")
-    return redirect(url_for('index'))
+    return redirect(url_for('accueil'))
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
