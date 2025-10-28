@@ -49,7 +49,7 @@ from flask import session
 def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        if "user_id" not in session:
+        if "utilisateur_id" not in session:
             flash("Connexion requise.")
             return redirect(url_for("login"))
         return f(*args, **kwargs)
