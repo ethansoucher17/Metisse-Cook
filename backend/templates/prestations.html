@@ -232,49 +232,17 @@
     « Métisser l’art de recevoir » – c’est l’idée d’une cuisine généreuse, métissée, au service de vos moments précieux.
   </blockquote>
   <div class="prestations">
-    <div class="prestation" data-aos="fade-up">
-      <img src="/static/images/cocktail.jpg" alt="Cocktail">
-      <div class="prestation-content">
-        <h3>Cocktail</h3>
-        <p>Bouchées et gourmandises pour vos apéritifs, inaugurations ou événements festifs.</p>
-      </div>
-    </div>
-    <div class="prestation" data-aos="fade-up">
-      <img src="/static/images/dejeuner.jpg" alt="Déjeuner / Dîner">
-      <div class="prestation-content">
-        <h3>Déjeuner / Dîner</h3>
-        <p>Menus complets sur mesure pour vos repas de mariage, événements privés ou professionnels.</p>
-      </div>
-    </div>
-    <div class="prestation" data-aos="fade-up">
-      <img src="/static/images/brunch.jpg" alt="Brunch">
-      <div class="prestation-content">
-        <h3>Brunch</h3>
-        <p>Buffets sucrés-salés généreux et colorés, parfaits pour un lendemain de fête ou une réunion conviviale.</p>
-      </div>
-    </div>
-    <div class="prestation" data-aos="fade-up">
-      <img src="/static/images/plateau.jpg" alt="Plateau apéritif">
-      <div class="prestation-content">
-        <h3>Plateau apéritif</h3>
-        <p>Livraison de plateaux variés pour vos apéros en petit comité, en entreprise ou à domicile.</p>
-      </div>
-    </div>
-    <div class="prestation" data-aos="fade-up">
-      <img src="/static/images/lunchbox.jpg" alt="Lunch box">
-      <div class="prestation-content">
-        <h3>Lunch box</h3>
-        <p>Repas individuels livrés pour vos réunions, séminaires ou repas pratiques sur le pouce.</p>
-      </div>
-    </div>
-    <div class="prestation" data-aos="fade-up">
-      <img src="/static/images/chef.jpg" alt="Chef à domicile">
-      <div class="prestation-content">
-        <h3>Cheffe à domicile</h3>
-        <p>Un moment sur mesure avec une cheffe à la maison, pour une expérience culinaire inoubliable.</p>
-      </div>
+  {% for p in prestations %}
+  <div class="prestation" data-aos="fade-up">
+    <img src="{{ url_for('static', filename='images/' + p.image_url) }}" alt="{{ p.titre }}">
+    <div class="prestation-content">
+      <h3>{{ p.titre }}</h3>
+      <p>{{ p.description }}</p>
+      <p style="font-style: italic; color: #888;">{{ p.type }}</p>
     </div>
   </div>
+  {% endfor %}
+</div>
 
   <div style="text-align: center; margin-top: 40px;">
     <a href="/contact" style="background-color: #8e8c37; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-size: 18px; font-family: 'Somelove', cursive;">
