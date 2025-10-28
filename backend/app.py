@@ -62,7 +62,7 @@ def login_required(f):
 def admin_prestations():
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
-    cursor.execute("SELECT id, titre, type, description FROM prestations")
+    cursor.execute("SELECT id, titre, description FROM prestations")
     prestations = cursor.fetchall()
     cursor.close()
     conn.close()
@@ -72,15 +72,14 @@ def admin_prestations():
 def ajouter_prestation():
     if request.method == "POST":
         titre = request.form['titre']
-        type_ = request.form['type']
         description = request.form['description']
         image_url = request.form['image_url']
 
         conn = get_db_connection()
         cursor = conn.cursor()
         cursor.execute(
-            "INSERT INTO prestations (titre, type, description, image_url) VALUES (%s, %s, %s, %s)",
-            (titre, type_, description, image_url)
+            "INSERT INTO prestations (titre, description, image_url) VALUES (%s, %s, %s, %s)",
+            (titre, description, image_url)
         )
         conn.commit()
         cursor.close()
@@ -110,7 +109,6 @@ def modifier_prestation(id):
 
     if request.method == "POST":
         titre = request.form['titre']
-        type_ = request.form['type']
         description = request.form['description']
         image_url = request.form['image_url']
 
