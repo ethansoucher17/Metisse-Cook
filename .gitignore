@@ -1,0 +1,54 @@
+# ====== ENVIRONNEMENT ET CONFIGURATION ======
+.env
+*.env
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.db
+*.sqlite3
+
+# ====== DEPENDANCES ======
+# Les dossiers créés par pip/venv
+venv/
+env/
+ENV/
+.venv/
+.Python
+
+# ====== LOGS ET TEMPORAIRES ======
+*.log
+*.pid
+*.seed
+*.bak
+*.swp
+*.tmp
+*.temp
+*.old
+*.orig
+*.DS_Store
+
+# ====== DOSSIERS SYSTEME ======
+.idea/
+.vscode/
+__MACOSX/
+
+# ====== FLASK SPECIFIQUE ======
+instance/
+.mypy_cache/
+.pytest_cache/
+.cache/
+
+# ====== FRONTEND (si tu as un dossier /frontend) ======
+node_modules/
+dist/
+build/
+*.map
+
+# ====== AUTRES ======
+# Les fichiers de déploiement sensibles
+*.pem
+*.key
+*.crt
+*.cfg
+*.json
