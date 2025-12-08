@@ -186,7 +186,7 @@
   <nav class="navbar">
     <div class="nav-container">
       <a href="/" class="nav-logo">
-        <img src="/static/images/logo_rond1.png" alt="Logo" class="logo-mini">
+        <img src="{{ contents['hero_logo'] }}" alt="Logo" class="logo-mini">
       </a>
       <div style="flex: 1;"></div>
       <button class="hamburger" aria-label="Menu" aria-expanded="false">
@@ -204,36 +204,39 @@
   </nav>
 
   <section data-aos="fade-up">
-    <img src="/static/images/logo_rond1.png"
+    <img src="{{ contents['hero_logo'] }}"
          alt="Logo Métisse Cook"
          data-aos="zoom-in"
          style="max-width: 180px; margin-bottom: 20px;">
-    <h1 style="font-family: 'Somelove', cursive; font-size: 24pt; font-weight: bold; letter-spacing: 1px; text-transform: uppercase;">Métisser l’art de recevoir</h1>
+    <h1 style="font-family: 'Somelove', cursive; font-size: 24pt; font-weight: bold; letter-spacing: 1px; text-transform: uppercase;">
+      {{ contents['hero_title'] }}
+    </h1>
   </section>
 
   <section data-aos="fade-up">
     <h2>À propos de la cheffe</h2>
-    <p style="font-family: 'Somelove', cursive; max-width: 800px; margin: auto; font-size: 14pt; line-height: 1.6; margin-top: -10px; margin-bottom: 30px;" data-aos="zoom-in">Cheffe Métisse Cook</p>
     <p style="max-width: 800px; margin: auto; font-size: 14pt; line-height: 1.6;" data-aos="zoom-in">
-      Métisse Cook est portée par une cheffe passionnée, inspirée par ses racines, ses voyages et les rencontres humaines. Elle propose une cuisine métissée, généreuse et sur-mesure, mêlant tradition africaine et créativité contemporaine. Forte d'une expérience dans la restauration et l'événementiel, elle sublime vos instants gourmands avec goût, audace et convivialité.
+      {{ contents['about_text'] }}
     </p>
   </section>
 
   <section data-aos="fade-up">
-    <img src="/static/images/illustration_evenement.jpg"
+    <img src="{{ contents['event_image'] }}"
          alt="Illustration événement"
          data-aos="zoom-in"
          style="max-width: 900px; width: 100%; border-radius: 10px; margin-bottom: 30px; box-shadow: 0 8px 20px rgba(0,0,0,0.1);">
     <p style="max-width: 800px; margin: auto; font-size: 14pt; line-height: 1.6;" data-aos="zoom-in">
-      Que ce soit pour un anniversaire en famille, un mariage raffiné, une réception d'entreprise ou une réunion conviviale entre collègues, Métisse Cook adapte ses propositions à vos envies. Chaque événement mérite une cuisine unique, chaleureuse et créative, pensée pour rassembler.
+      {{ contents['event_text'] }}
     </p>
   </section>
 
   <section data-aos="fade-up">
-    <blockquote style="font-family: 'Somelove', cursive; font-style: italic; font-size: 16pt; color: #555; max-width: 700px; margin: 0 auto 40px;">« Une cuisine de partage, de cœur et de métissage »</blockquote>
+    <blockquote style="font-family: 'Somelove', cursive; font-style: italic; font-size: 16pt; color: #555; max-width: 700px; margin: 0 auto 40px;" data-aos="zoom-in">
+      {{ contents['quote_text'] }}
+    </blockquote>
     <h2>Des prestations pour tous les goûts</h2>
     <p style="max-width: 800px; margin: auto; font-size: 14pt; line-height: 1.6;" data-aos="zoom-in">
-      Découvrez l’ensemble des formules proposées : cocktail, déjeuner/dîner, brunch, plateaux apéritifs, lunch box et chef à domicile.
+      {{ contents['prestations_text'] }}
     </p>
     <div style="margin-top: 30px;">
       <a href="/prestations" class="btn">Voir les prestations</a>
@@ -242,7 +245,7 @@
 
   <hr style="border: none; border-top: 1px solid #dcd6c0; margin: 60px auto 0; width: 80%;">
   <section data-aos="fade-up" style="background-color: #f9f7f1; text-align: center; padding: 40px 20px; margin-top: 80px;">
-    <img src="/static/images/bandeau_infos2.png" alt="Coordonnées Métisse Cook" style="max-width: 600px; width: 100%; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.08);">
+    <img src="{{ contents['banner_image'] }}" alt="Coordonnées Métisse Cook" style="max-width: 600px; width: 100%; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.08);">
     <div style="margin-top: 30px;">
       <a href="/contact" class="btn">Réserver une prestation</a>
     </div>
@@ -251,6 +254,7 @@
     <hr style="border: none; border-top: 1px solid #dcd6c0; width: 80%; margin: 60px auto 30px;">
     <p>© Métisse Cook 2025 – Tous droits réservés.</p>
   </footer>
+
   <script>
     document.addEventListener('DOMContentLoaded', function () {
       AOS.init();

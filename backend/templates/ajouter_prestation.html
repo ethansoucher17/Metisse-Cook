@@ -51,7 +51,7 @@
 </head>
 <body>
     <h1>Ajouter une nouvelle prestation</h1>
-    <form method="POST" action="/admin/prestations/ajouter">
+    <form method="POST" action="/admin/prestations/ajouter" enctype="multipart/form-data">
         <label for="titre">Titre :</label>
         <input type="text" name="titre" required>
 
@@ -65,8 +65,8 @@
         <label for="description">Description :</label>
         <textarea name="description" rows="4" required></textarea>
 
-        <label for="image_url">URL de l’image :</label>
-        <input type="text" name="image_url" required>
+        <label for="image_file">Image :</label>
+    <input type="file" name="image_file" accept="image/*">
 
         <button type="submit">Ajouter</button>
     </form>

@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 from flask import request, redirect, url_for, flash, get_flashed_messages
 from flask_mail import Mail, Message
 from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.utils import secure_filename
 
 load_dotenv()
 app = Flask(__name__)
@@ -22,6 +23,20 @@ def get_db_connection():
         collation='utf8mb4_general_ci'
     )
 
+def get_page_contents(page_slug):
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute(
+        "SELECT block_key, content, content_type FROM contents WHERE page_slug = %s",
+        (page_slug,),
+    )
+    rows = cursor.fetchall()
+    cursor.close()
+    conn.close()
+
+    # dict : {'hero_title': '...', 'event_image': '...'}
+    return {row["block_key"]: row["content"] for row in rows}
+
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
@@ -31,9 +46,21 @@ app.config['MAIL_DEFAULT_SENDER'] = "metissecook@gmail.com"
 
 mail = Mail(app)
 
+# Dossier d'upload et extensions autorisées
+UPLOAD_FOLDER = os.path.join("backend", "static", "uploads")
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
+ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "webp"}
+
+app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
+
+def allowed_file(filename):
+    return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
+
 @app.route("/")
 def index():
-    return render_template("index.html")
+    contents = get_page_contents("home")
+    return render_template("index.html", contents=contents)
 
 @app.route("/accueil")
 def accueil():
@@ -61,29 +88,99 @@ def login_required(f):
         return f(*args, **kwargs)
     return decorated_function
 
+@app.route("/admin/accueil", methods=["GET", "POST"])
+@login_required
+def admin_accueil():
+    # Récupération des contenus actuels
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute(
+        "SELECT block_key, content, content_type FROM contents WHERE page_slug = %s",
+        ("home",),
+    )
+    rows = cursor.fetchall()
+    cursor.close()
+    conn.close()
+
+    contents = {row["block_key"]: row["content"] for row in rows}
+
+    if request.method == "POST":
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        def update_block(block_key, value):
+            cursor.execute(
+                """
+                UPDATE contents
+                SET content = %s
+                WHERE page_slug = %s AND block_key = %s
+                """,
+                (value, "home", block_key),
+            )
+
+        # Textes
+        update_block("hero_title",        request.form.get("hero_title", ""))
+        update_block("about_text",        request.form.get("about_text", ""))
+        update_block("event_text",        request.form.get("event_text", ""))
+        update_block("quote_text",        request.form.get("quote_text", ""))
+        update_block("prestations_text",  request.form.get("prestations_text", ""))
+
+        # Images (upload éventuel)
+        for field_name, block_key in [
+            ("event_image", "event_image"),
+            ("banner_image", "banner_image"),
+        ]:
+            file = request.files.get(field_name)
+            if file and file.filename != "" and allowed_file(file.filename):
+                filename = secure_filename(file.filename)
+                filepath = os.path.join(app.config["UPLOAD_FOLDER"], filename)
+                file.save(filepath)
+                new_url = "/static/uploads/" + filename
+                update_block(block_key, new_url)
+
+        conn.commit()
+        cursor.close()
+        conn.close()
+
+        flash("Page d’accueil mise à jour avec succès !")
+        return redirect(url_for("admin_accueil"))
+
+    return render_template("admin_accueil.html", contents=contents)
+
 @app.route("/admin/prestations")
 @login_required
 def admin_prestations():
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
-    cursor.execute("SELECT id, titre, description, image_url FROM prestations")
+    cursor.execute("SELECT id, titre, type, description, image_url FROM prestations")
     prestations = cursor.fetchall()
     cursor.close()
     conn.close()
     return render_template("admin_prestations.html", prestations=prestations)
 
+
 @app.route("/admin/prestations/ajouter", methods=["GET", "POST"])
+@login_required
 def ajouter_prestation():
     if request.method == "POST":
         titre = request.form['titre']
+        type_prestation = request.form['type']
         description = request.form['description']
-        image_url = request.form['image_url']
+
+        image_url = None
+        file = request.files.get("image_file")
+
+        if file and file.filename != "" and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            filepath = os.path.join(app.config["UPLOAD_FOLDER"], filename)
+            file.save(filepath)
+            image_url = "/static/uploads/" + filename
 
         conn = get_db_connection()
         cursor = conn.cursor()
         cursor.execute(
-            "INSERT INTO prestations (titre, description, image_url) VALUES (%s, %s, %s)",
-            (titre, description, image_url)
+            "INSERT INTO prestations (titre, type, description, image_url) VALUES (%s, %s, %s, %s)",
+            (titre, type_prestation, description, image_url)
         )
         conn.commit()
         cursor.close()
@@ -94,7 +191,9 @@ def ajouter_prestation():
 
     return render_template("ajouter_prestation.html")
 
+
 @app.route("/admin/prestations/supprimer/<int:id>", methods=["POST"])
+@login_required
 def supprimer_prestation(id):
     conn = get_db_connection()
     cursor = conn.cursor()
@@ -106,27 +205,57 @@ def supprimer_prestation(id):
     flash("Prestation supprimée avec succès !")
     return redirect(url_for("admin_prestations"))
 
+
 @app.route("/admin/prestations/modifier/<int:id>", methods=["GET", "POST"])
+@login_required
 def modifier_prestation(id):
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
 
+    # On récupère la prestation pour obtenir l'image actuelle
+    cursor.execute("SELECT * FROM prestations WHERE id = %s", (id,))
+    prestation = cursor.fetchone()
+
+    if not prestation:
+        cursor.close()
+        conn.close()
+        flash("Prestation introuvable.")
+        return redirect(url_for("admin_prestations"))
+
     if request.method == "POST":
         titre = request.form['titre']
+        type_prestation = request.form['type']
         description = request.form['description']
-        image_url = request.form['image_url']
 
+        # On part de l'image actuelle
+        image_url = prestation["image_url"]
+
+        file = request.files.get("image_file")
+        if file and file.filename != "" and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            filepath = os.path.join(app.config["UPLOAD_FOLDER"], filename)
+            file.save(filepath)
+            image_url = "/static/uploads/" + filename
+
+        # On repasse en cursor "simple" si tu veux, mais pas obligatoire
+        cursor.close()
+        cursor = conn.cursor()
         cursor.execute("""
             UPDATE prestations
-            SET titre = %s, description = %s, image_url = %s
+            SET titre = %s, type = %s, description = %s, image_url = %s
             WHERE id = %s
-        """, (titre, description, image_url, id))
+        """, (titre, type_prestation, description, image_url, id))
         conn.commit()
         cursor.close()
         conn.close()
 
         flash("Prestation modifiée avec succès !")
         return redirect(url_for("admin_prestations"))
+
+    # GET → on affiche le formulaire avec les données actuelles
+    cursor.close()
+    conn.close()
+    return render_template("modifier_prestation.html", prestation=prestation)
 
     # GET — afficher le formulaire avec les données actuelles
     cursor.execute("SELECT * FROM prestations WHERE id = %s", (id,))

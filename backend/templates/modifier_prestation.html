@@ -51,7 +51,7 @@
 </head>
 <body>
     <h1>Modifier une prestation</h1>
-    <form method="POST">
+    <form method="POST" enctype="multipart/form-data">
         <label for="titre">Titre :</label>
         <input type="text" name="titre" value="{{ prestation.titre }}" required>
 
@@ -65,8 +65,17 @@
         <label for="description">Description :</label>
         <textarea name="description" rows="4" required>{{ prestation.description }}</textarea>
 
-        <label for="image_url">URL de l’image :</label>
-        <input type="text" name="image_url" value="{{ prestation.image_url }}" required>
+        <label>Image actuelle :</label>
+        {% if prestation.image_url %}
+        <div>
+            <img src="{{ prestation.image_url }}"
+                alt="Image {{ prestation.titre }}"
+                style="max-height: 120px; border-radius: 4px; margin-bottom: 10px;">
+        </div>
+        {% endif %}
+
+        <label for="image_file">Nouvelle image (optionnel) :</label>
+        <input type="file" name="image_file" accept="image/*">
 
         <button type="submit">Enregistrer les modifications</button>
     </form>
