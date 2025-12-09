@@ -163,8 +163,8 @@ def admin_prestations():
 @login_required
 def ajouter_prestation():
     if request.method == "POST":
-        titre = request.form['titre']
-        description = request.form['description']
+        titre = request.form["titre"]
+        description = request.form["description"]
 
         image_url = None
         file = request.files.get("image_file")
@@ -173,20 +173,23 @@ def ajouter_prestation():
             filename = secure_filename(file.filename)
             filepath = os.path.join(app.config["UPLOAD_FOLDER"], filename)
             file.save(filepath)
+            # on stocke le chemin utilisable dans le front
             image_url = "/static/uploads/" + filename
 
         conn = get_db_connection()
         cursor = conn.cursor()
         cursor.execute(
             "INSERT INTO prestations (titre, description, image_url) VALUES (%s, %s, %s)",
-            (titre, description, image_url)
+            (titre, description, image_url),
         )
         conn.commit()
         cursor.close()
         conn.close()
 
         flash("Prestation ajoutée avec succès !")
-        return redirect(url_for('admin_prestations'))
+        return redirect(url_for("admin_prestations"))
+
+    return render_template("ajouter_prestation.html")
 
     return render_template("ajouter_prestation.html")
 
@@ -210,8 +213,6 @@ def supprimer_prestation(id):
 def modifier_prestation(id):
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
-
-    # On récupère la prestation pour obtenir l'image actuelle
     cursor.execute("SELECT * FROM prestations WHERE id = %s", (id,))
     prestation = cursor.fetchone()
 
@@ -222,11 +223,10 @@ def modifier_prestation(id):
         return redirect(url_for("admin_prestations"))
 
     if request.method == "POST":
-        titre = request.form['titre']
-        description = request.form['description']
+        titre = request.form["titre"]
+        description = request.form["description"]
 
-        # On part de l'image actuelle
-        image_url = prestation["image_url"]
+        image_url = prestation["image_url"]  # image actuelle par défaut
 
         file = request.files.get("image_file")
         if file and file.filename != "" and allowed_file(file.filename):
@@ -235,14 +235,15 @@ def modifier_prestation(id):
             file.save(filepath)
             image_url = "/static/uploads/" + filename
 
-        # On repasse en cursor "simple" si tu veux, mais pas obligatoire
-        cursor.close()
         cursor = conn.cursor()
-        cursor.execute("""
+        cursor.execute(
+            """
             UPDATE prestations
             SET titre = %s, description = %s, image_url = %s
             WHERE id = %s
-        """, (titre, description, image_url, id))
+            """,
+            (titre, description, image_url, id),
+        )
         conn.commit()
         cursor.close()
         conn.close()
@@ -250,21 +251,8 @@ def modifier_prestation(id):
         flash("Prestation modifiée avec succès !")
         return redirect(url_for("admin_prestations"))
 
-    # GET → on affiche le formulaire avec les données actuelles
     cursor.close()
     conn.close()
-    return render_template("modifier_prestation.html", prestation=prestation)
-
-    # GET — afficher le formulaire avec les données actuelles
-    cursor.execute("SELECT * FROM prestations WHERE id = %s", (id,))
-    prestation = cursor.fetchone()
-    cursor.close()
-    conn.close()
-
-    if not prestation:
-        flash("Prestation introuvable.")
-        return redirect(url_for("admin_prestations"))
-
     return render_template("modifier_prestation.html", prestation=prestation)
 
 @app.route("/contact", methods=["GET", "POST"])

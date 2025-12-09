@@ -51,22 +51,15 @@
 </head>
 <body>
     <h1>Ajouter une nouvelle prestation</h1>
-    <form method="POST" action="/admin/prestations/ajouter" enctype="multipart/form-data">
+    <form method="POST" enctype="multipart/form-data">
         <label for="titre">Titre :</label>
-        <input type="text" name="titre" required>
-
-        <label for="type">Type :</label>
-        <select name="type" required>
-            <option value="mariage">Mariage</option>
-            <option value="brunch">Brunch</option>
-            <option value="entreprise">Entreprise</option>
-        </select>
+        <input type="text" name="titre" id="titre" required>
 
         <label for="description">Description :</label>
-        <textarea name="description" rows="4" required></textarea>
+        <textarea name="description" id="description" required></textarea>
 
         <label for="image_file">Image :</label>
-    <input type="file" name="image_file" accept="image/*">
+        <input type="file" name="image_file" id="image_file" accept="image/*">
 
         <button type="submit">Ajouter</button>
     </form>
