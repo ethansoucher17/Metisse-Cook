@@ -338,6 +338,17 @@ def logout():
     flash("Vous avez été déconnecté.")
     return redirect(url_for('index'))
 
+@app.route("/debug_uploads")
+def debug_uploads():
+    folder = app.config["UPLOAD_FOLDER"]
+    try:
+        files = os.listdir(folder)
+    except FileNotFoundError:
+        return f"UPLOAD_FOLDER = {folder}<br>Ce dossier n'existe pas."
+
+    listing = "<br>".join(files) or "(dossier vide)"
+    return f"UPLOAD_FOLDER = {folder}<br><br>Fichiers présents :<br>{listing}"
+
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port, debug=True)
