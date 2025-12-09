@@ -94,6 +94,11 @@
           {% endif %}
         {% endwith %}
 
+        <p>
+            <a href="{{ url_for('admin_accueil') }}">Modifier la page d’accueil</a> |
+            <a href="{{ url_for('admin_prestations') }}">Gérer les prestations</a>
+        </p>
+
         <h1>Prestations enregistrées</h1>
         <a href="/admin/prestations/ajouter" class="btn-ajouter">Ajouter une prestation</a>
         <table>
