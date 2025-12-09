@@ -178,7 +178,7 @@ def ajouter_prestation():
         conn = get_db_connection()
         cursor = conn.cursor()
         cursor.execute(
-            "INSERT INTO prestations (titre, description, image_url) VALUES (%s, %s, %s, %s)",
+            "INSERT INTO prestations (titre, description, image_url) VALUES (%s, %s, %s)",
             (titre, description, image_url)
         )
         conn.commit()
