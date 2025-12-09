@@ -234,7 +234,7 @@
   <div class="prestations">
   {% for p in prestations %}
   <div class="prestation" data-aos="fade-up">
-    <img src="{{ url_for('static', filename='images/' + p.image_url) }}" alt="{{ p.titre }}">
+    <img src="{{ prestation.image_url }}" alt="{{ prestation.titre }}">
     <div class="prestation-content">
       <h3>{{ p.titre }}</h3>
       <p>{{ p.description }}</p>
