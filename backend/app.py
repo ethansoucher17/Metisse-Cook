@@ -164,18 +164,30 @@ def admin_prestations():
 @login_required
 def ajouter_prestation():
     if request.method == "POST":
-        titre = request.form["titre"]
-        description = request.form["description"]
+        titre = request.form.get("titre", "").strip()
+        description = request.form.get("description", "").strip()
 
         image_url = None
-        file = request.files.get("image_file")
 
-        if file and file.filename != "" and allowed_file(file.filename):
+        file = request.files.get("image_file")
+        app.logger.info(f"Fichier reçu pour image_file : {file!r}")
+
+        if file:
+            app.logger.info(f"Nom de fichier reçu : {file.filename!r}")
+        else:
+            app.logger.info("Aucun fichier reçu dans image_file.")
+
+        if file and file.filename and allowed_file(file.filename):
             filename = secure_filename(file.filename)
-            filepath = os.path.join(app.config["UPLOAD_FOLDER"], filename)
+            upload_folder = app.config["UPLOAD_FOLDER"]
+            app.logger.info(f"Sauvegarde du fichier dans : {upload_folder}/{filename}")
+            os.makedirs(upload_folder, exist_ok=True)
+            filepath = os.path.join(upload_folder, filename)
             file.save(filepath)
-            # on stocke le chemin utilisable dans le front
             image_url = "/static/uploads/" + filename
+            app.logger.info(f"image_url stockée en base : {image_url}")
+        else:
+            app.logger.info("Aucun fichier sauvegardé (soit pas de fichier, soit extension non autorisée).")
 
         conn = get_db_connection()
         cursor = conn.cursor()
@@ -189,8 +201,6 @@ def ajouter_prestation():
 
         flash("Prestation ajoutée avec succès !")
         return redirect(url_for("admin_prestations"))
-
-    return render_template("ajouter_prestation.html")
 
     return render_template("ajouter_prestation.html")
 
